@@ -58,7 +58,7 @@ public class ClnCommunicationHandler extends Thread {
 				
 				log.info("Received client message done, msg: <{}>", new String(bClnMsg));
 				
-				// TODO ¬İ­n¦^¤°»ò°T®§µ¹ client
+				// TODO çœ‹è¦å›ä»€éº¼è¨Šæ¯çµ¦ client
 			}
 			clientDisconnected();
 		}
