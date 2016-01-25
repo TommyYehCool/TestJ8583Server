@@ -36,7 +36,7 @@ public class ServerMain {
 
 		PropertyConfigurator.configure(log4jConfig);
 		
-		log.info("Load log4j config succeed, path: [{}]", log4jConfig);
+		log.info("Load log4j config succeed, path: <{}>", log4jConfig);
 	}
 
 	private void loadJ8583Config() {
@@ -45,7 +45,7 @@ public class ServerMain {
 		try {
 			ConfigParser.configureFromUrl(mf, new File(j8583Config).toURI().toURL());
 			
-			log.info("Load J8583 config succeed, path: [{}]", j8583Config);
+			log.info("Load J8583 config succeed, path: <{}>", j8583Config);
 		} 
 		catch (IOException e) {
 			log.error("IOException raised while loading J8583 config, msg: <{}>", e.toString(), e);
@@ -79,7 +79,7 @@ public class ServerMain {
 				
 				String sessionId = clnSocket.getInetAddress().toString().substring(1) + ":" + clnSocket.getPort();
 				
-				log.info("Client connected, info: <{}>", sessionId);
+				log.info("Client connected, session-id: <{}>", sessionId);
 				
 				ClnCommunicationHandler clnCommunicationHandler 
 					= new ClnCommunicationHandler(sessionId, clnSocket);
