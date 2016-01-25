@@ -133,13 +133,13 @@ public class ClnCommunicationHandler extends Thread {
 						mOutputStream.flush();
 					}
 				}
-				log.warn("Received client disconected signal, terminate RespForClnHandler thread");
+				log.warn("Received client disconnected signal, terminate RespForClnHandler thread");
 			} 
 			catch (InterruptedException e) {
 				log.error("InterruptedException raised while getting response message from queue, RespForClnHandler terminated, msg: <{}>", e.getMessage(), e);
 			} 
 			catch (IOException e) {
-				log.error("IOException raised while send response message to client, RespForClnHandler terminated, msg: <{}>", e.getMessage(), e);
+				log.error("IOException raised while sending response message to client, RespForClnHandler terminated, msg: <{}>", e.getMessage(), e);
 			}
 		}
 	}
