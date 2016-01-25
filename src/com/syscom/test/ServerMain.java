@@ -85,6 +85,8 @@ public class ServerMain {
 					= new ClnCommunicationHandler(sessionId, clnSocket);
 				
 				clnCommunicationHandler.start();
+				
+				SessionManager.getInstance().clientConnected(sessionId, clnCommunicationHandler);
 			}
 		}
 		catch (IOException e) {

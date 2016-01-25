@@ -101,7 +101,11 @@ public class ClnCommunicationHandler extends Thread {
 					+ "2. Terminate RespForClnHandler thread", mSessoinId);
 		
 		mConnected = false;
-		mRespForClnQ.offer(DISCONNECTED.getBytes());
+		sendRespToClient(DISCONNECTED.getBytes());
+	}
+	
+	public void sendRespToClient(byte[] msg) {
+		mRespForClnQ.offer(msg);
 	}
 	
 	private class RespForClnHandler extends Thread {
