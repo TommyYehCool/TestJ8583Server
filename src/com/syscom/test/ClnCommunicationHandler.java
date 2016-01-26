@@ -108,15 +108,15 @@ public class ClnCommunicationHandler extends Thread {
 			IsoMessage isoMsg = mf.parseMessage(bClnMsg, 0);
 			if (isoMsg != null) {
 				System.out.printf("\nMessage type: %04x%n", isoMsg.getType());
-	            System.out.println("FIELD TYPE    VALUE");
-	            for (int i = 2; i <= 128; i++) {
-	                IsoValue<?> f = isoMsg.getField(i);
-	                if (f != null) {
-	                    System.out.printf("%5d %-6s [", i, f.getType());
-	                    System.out.print(f.toString());
-	                    System.out.println(']');
-	                }
-	            }
+				System.out.println("FIELD TYPE    VALUE");
+				for (int i = 2; i <= 128; i++) {
+					IsoValue<?> f = isoMsg.getField(i);
+					if (f != null) {
+						System.out.printf("%5d %-6s [", i, f.getType());
+						System.out.print(f.toString());
+						System.out.println(']');
+					}
+				}
 			}
 			else {
 				log.warn("Parse client ISO8583 message is null");
