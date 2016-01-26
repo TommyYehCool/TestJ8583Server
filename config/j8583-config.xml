@@ -11,16 +11,21 @@
 
 	<!-- The client example uses this to create requests -->
 	<template type="0200">
-		<field num="3" type="NUMERIC" length="6">650000</field>
-		<field num="32" type="LLVAR">Jeff ugly</field>
-		<field num="35" type="LLVAR">4591700012340000=</field>
-		<field num="43" type="ALPHA" length="40">SOLABTEST             TEST-3       DF MX</field>
-		<field num="48" type="LLLVAR">新北市三重區</field>
-		<field num="49" type="ALPHA" length="3">484</field>
-		<field num="60" type="LLLVAR">B456PRO1+000</field>
-		<field num="61" type="LLLVAR">        1234P vamos a meter más de 90 caracteres en este campo para comprobar si hay algun error en el parseo del mismo. Esta definido como un LLLVAR aqui por lo tanto esto debe caber sin problemas; las guias de parseo de 200 y 210 tienen LLLVAR en campo 61 tambien.</field>
-		<field num="100" type="LLVAR">999</field>
-		<field num="102" type="LLVAR">ABCD</field>
+		<field num="2" type="LLVAR">123</field>
+		<field num="3" type="NUMERIC" length="6">000001</field>
+		<field num="4" type="AMOUNT">999</field>
+		<field num="7" type="DATE10">0126021430</field>
+		<field num="11" type="NUMERIC" length="6">123456</field>
+		<field num="12" type="TIME">021430</field>
+		<field num="13" type="DATE4">0126</field>
+		<field num="15" type="DATE4">0126</field>
+		<field num="18" type="NUMERIC" length="4">1234</field>	
+		<field num="32" type="LLVAR">999</field>
+		<field num="37" type="NUMERIC" length="12">123456789012</field>
+		<field num="42" type="ALPHA" length="15">ALPHA15        </field>
+		<field num="48" type="LLLVAR">Ben is fat man</field>
+		<field num="49" type="ALPHA" length="3">Ben</field>
+		<field num="63" type="LLLVAR">Mark is fat man too</field>
 	</template>
 
 	<!-- The server example uses this to read the requests -->
