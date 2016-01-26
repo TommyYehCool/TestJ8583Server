@@ -3,25 +3,17 @@ package com.syscom.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.text.ParseException;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.IsoValue;
-import com.solab.iso8583.MessageFactory;
 
 public class ClnCommunicationHandler extends Thread {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
 	private final static String DISCONNECTED = "disconnected";
-	
-	private MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
 	
 	private String mSessoinId;
 	private boolean mConnected = false;
@@ -66,7 +58,7 @@ public class ClnCommunicationHandler extends Thread {
 				
 				log.info("Received client message done, msg: <{}>", new String(bClnMsg));
 				
-				processISO8583(bClnMsg);
+				MessageHandler.processISO8583(bClnMsg);
 			}
 			clientDisconnected();
 		}
@@ -101,33 +93,6 @@ public class ClnCommunicationHandler extends Thread {
 			}
 		}
 		return isClientDisconnected;
-	}
-	
-	private void processISO8583(byte[] bClnMsg) {
-		try {
-			IsoMessage isoMsg = mf.parseMessage(bClnMsg, 0);
-			if (isoMsg != null) {
-				System.out.printf("\nMessage type: %04x%n", isoMsg.getType());
-				System.out.println("FIELD TYPE    VALUE");
-				for (int i = 2; i <= 128; i++) {
-					IsoValue<?> f = isoMsg.getField(i);
-					if (f != null) {
-						System.out.printf("%5d %-6s [", i, f.getType());
-						System.out.print(f.toString());
-						System.out.println(']');
-					}
-				}
-			}
-			else {
-				log.warn("Parse client ISO8583 message is null");
-			}
-		} 
-		catch (UnsupportedEncodingException e) {
-			log.warn("UnsupportedEncodingException raised while parsing client ISO8583 message, msg: <{}>", e.getMessage(), e);
-		} 
-		catch (ParseException e) {
-			log.warn("ParseException raised while parsing client ISO8583 message, msg: <{}>", e.getMessage(), e);
-		}
 	}
 	
 	private void clientDisconnected() {
