@@ -96,9 +96,9 @@ public class ClnCommunicationHandler extends Thread {
 	}
 	
 	private void clientDisconnected() {
-		log.warn("Detected client disconnected, sessionId: <{}>, "
-					+ "1. Set ClnCommuncationHandler connected flag to false, "
-					+ "2. Terminate RespForClnHandler thread", mSessoinId);
+		log.warn("Detected client disconnected with sessionId: <{}>, "
+				+ "1. Set ClnCommuncationHandler connected flag to false, "
+				+ "2. Terminate RespForClnHandler thread", mSessoinId);
 		
 		mConnected = false;
 		sendRespToClient(DISCONNECTED.getBytes());
