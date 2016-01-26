@@ -79,7 +79,7 @@ public class ServerMain {
 				
 				String sessionId = clnSocket.getInetAddress().toString().substring(1) + ":" + clnSocket.getPort();
 				
-				log.info("Client connected, session-id: <{}>", sessionId);
+				log.info("Client connected, sessionId: <{}>", sessionId);
 				
 				ClnCommunicationHandler clnCommunicationHandler 
 					= new ClnCommunicationHandler(sessionId, clnSocket);
