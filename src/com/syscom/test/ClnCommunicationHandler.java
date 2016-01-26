@@ -23,6 +23,8 @@ public class ClnCommunicationHandler extends Thread {
 	
 	private RespForClnQ mRespForClnQ;
 	private RespForClnHandler mRespForClnHandler;
+	
+	private MessageHandler mMessageHandler = MessageHandler.getInstance();
 
 	public ClnCommunicationHandler(String sessionId, Socket clnSocket) throws IOException {
 		mSessoinId = sessionId;
@@ -58,7 +60,7 @@ public class ClnCommunicationHandler extends Thread {
 				
 				log.info("Received client message done, msg: <{}>", new String(bClnMsg));
 				
-				MessageHandler.processISO8583(bClnMsg);
+				mMessageHandler.processISO8583(bClnMsg);
 			}
 			clientDisconnected();
 		}

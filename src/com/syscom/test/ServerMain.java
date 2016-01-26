@@ -1,6 +1,5 @@
 package com.syscom.test;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -11,22 +10,16 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.MessageFactory;
-import com.solab.iso8583.parse.ConfigParser;
-
 public class ServerMain {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
 	private int mPort = 1234;
 	
-	private MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
-	
 	private void start() {
 		loadLog4jConfig();
 		
-		loadJ8583Config();
+		initMessageHandler();
 
 		startServer();
 	}
@@ -39,19 +32,17 @@ public class ServerMain {
 		log.info("Load log4j config succeed, path: <{}>", log4jConfig);
 	}
 
-	private void loadJ8583Config() {
-		String j8583Config = "./config/j8583-config.xml";
-		
-		try {
-			ConfigParser.configureFromUrl(mf, new File(j8583Config).toURI().toURL());
-			
-			log.info("Load J8583 config succeed, path: <{}>", j8583Config);
-		} 
-		catch (IOException e) {
-			log.error("IOException raised while loading J8583 config, msg: <{}>", e.toString(), e);
+	private void initMessageHandler() {
+		boolean initSucceed = MessageHandler.getInstance().init();
+		if (initSucceed) {
+			log.info("Initialize MessageHandler done");
+		}
+		else {
+			log.error("Initialize MessageHandler failed");
+			System.exit(1);
 		}
 	}
-	
+
 	private void startServer() {
 		ServerSocket svrSocket = null;
 		try {

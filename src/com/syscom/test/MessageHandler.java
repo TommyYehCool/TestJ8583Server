@@ -1,5 +1,7 @@
 package com.syscom.test;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 
@@ -9,14 +11,38 @@ import org.slf4j.LoggerFactory;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoValue;
 import com.solab.iso8583.MessageFactory;
+import com.solab.iso8583.parse.ConfigParser;
 
 public class MessageHandler {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
-	private static MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
-
-	public static void processISO8583(byte[] bClnMsg) {
+	private static MessageHandler instance = new MessageHandler();
+	
+	private MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
+	
+	public static MessageHandler getInstance() {
+		return instance;
+	}
+	
+	public boolean init() {
+		boolean succeed = true;
+		
+		String j8583Config = "./config/j8583-config.xml";
+		try {
+			ConfigParser.configureFromUrl(mf, new File(j8583Config).toURI().toURL());
+			
+			log.info("Load J8583 config succeed, path: <{}>", j8583Config);
+		} 
+		catch (IOException e) {
+			log.error("IOException raised while loading J8583 config, msg: <{}>", e.toString(), e);
+			
+			succeed = false;
+		}
+		return succeed;
+	}
+	
+	public void processISO8583(byte[] bClnMsg) {
 		try {
 			IsoMessage isoMsg = mf.parseMessage(bClnMsg, 0);
 			if (isoMsg != null) {
