@@ -131,6 +131,8 @@ public class ClnCommunicationHandler extends Thread {
 						mOutputStream.write(msgLen);
 						mOutputStream.write(bRespMsgs);
 						mOutputStream.flush();
+						
+						log.info("Send response message to client done, msg: <{}>", new String(bRespMsgs));
 					}
 				}
 				log.warn("Received client disconnected signal, terminate RespForClnHandler thread");
