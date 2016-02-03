@@ -20,7 +20,7 @@ public class SvrMain {
 	private void start() {
 		loadLog4jConfig();
 		
-		showPid();
+		showInitLog();
 		
 		initMessageHandler();
 
@@ -35,8 +35,8 @@ public class SvrMain {
 		log.info("Load log4j config succeed, path: <{}>", log4jConfig);
 	}
 	
-	private void showPid() {
-		log.info("Process ID: <{}>", ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
+	private void showInitLog() {
+		log.info("------- Try to init client process with process ID: <{}> -------", ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
 	}
 
 	private void initMessageHandler() {
