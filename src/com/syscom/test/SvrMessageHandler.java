@@ -17,6 +17,8 @@ public class SvrMessageHandler {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
+	private final String mJ8583CfgPath = "./config/j8583-config.xml";
+	
 	private static SvrMessageHandler instance = new SvrMessageHandler();
 	
 	private MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
@@ -27,12 +29,10 @@ public class SvrMessageHandler {
 	
 	public boolean init() {
 		boolean succeed = true;
-		
-		String j8583Config = "./config/j8583-config.xml";
 		try {
-			ConfigParser.configureFromUrl(mf, new File(j8583Config).toURI().toURL());
+			ConfigParser.configureFromUrl(mf, new File(mJ8583CfgPath).toURI().toURL());
 			
-			log.info("Load J8583 config succeed, path: <{}>", j8583Config);
+			log.info("Load J8583 config succeed, path: <{}>", mJ8583CfgPath);
 		} 
 		catch (IOException e) {
 			log.error("IOException raised while loading J8583 config, msg: <{}>", e.toString(), e);
