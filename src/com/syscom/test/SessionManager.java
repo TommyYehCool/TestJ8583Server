@@ -3,13 +3,8 @@ package com.syscom.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class SessionManager {
 
-	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
-	
 	public static SessionManager instance = new SessionManager();
 	
 	private Map<String, SvrCommunicationHandler> mClientConns = new HashMap<>();
