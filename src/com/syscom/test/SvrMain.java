@@ -11,7 +11,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServerMain {
+public class SvrMain {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
@@ -93,6 +93,6 @@ public class ServerMain {
 	}
 
 	public static void main(String[] args) {
-		new ServerMain().start();
+		new SvrMain().start();
 	}
 }
