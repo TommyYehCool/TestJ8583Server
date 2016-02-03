@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class RespForClnQ {
 	private BlockingQueue<byte[]> queue;
 	
+	// TODO 改為設定檔
 	private int maximumTakenFromQ; 
 	
 	public RespForClnQ() {

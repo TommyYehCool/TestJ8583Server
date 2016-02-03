@@ -24,7 +24,7 @@ public class SvrCommunicationHandler extends Thread {
 	private RespForClnQ mRespForClnQ;
 	private RespForClnHandler mRespForClnHandler;
 	
-	private SvrMessageHandler mMessageHandler = SvrMessageHandler.getInstance();
+	private SvrMessageHandler mMessageHandler;
 
 	public SvrCommunicationHandler(String sessionId, Socket clnSocket) throws IOException {
 		setName(this.getClass().getSimpleName());
@@ -38,6 +38,8 @@ public class SvrCommunicationHandler extends Thread {
 		mRespForClnQ = new RespForClnQ();
 		mRespForClnHandler = new RespForClnHandler();
 		mRespForClnHandler.start();
+		
+		mMessageHandler = SvrMessageHandler.getInstance();
 	}
 	
 	public void run() {
@@ -101,7 +103,7 @@ public class SvrCommunicationHandler extends Thread {
 	
 	private void clientDisconnected() {
 		log.warn("Detected client disconnected with sessionId: <{}>, "
-				+ "1. Set ClnCommuncationHandler connected flag to false, "
+				+ "1. Set connected flag to false, "
 				+ "2. Terminate RespForClnHandler thread", mSessoinId);
 		
 		mConnected = false;
@@ -113,6 +115,11 @@ public class SvrCommunicationHandler extends Thread {
 	}
 	
 	private class RespForClnHandler extends Thread {
+		
+		public RespForClnHandler() {
+			setName(this.getClass().getSimpleName());
+		}
+		
 		public void run() {
 			try {
 				while (mConnected) {
