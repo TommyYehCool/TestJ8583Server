@@ -13,15 +13,15 @@ import com.solab.iso8583.IsoValue;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
 
-public class MessageHandler {
+public class SvrMessageHandler {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
-	private static MessageHandler instance = new MessageHandler();
+	private static SvrMessageHandler instance = new SvrMessageHandler();
 	
 	private MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
 	
-	public static MessageHandler getInstance() {
+	public static SvrMessageHandler getInstance() {
 		return instance;
 	}
 	

@@ -12,14 +12,14 @@ public class SessionManager {
 	
 	public static SessionManager instance = new SessionManager();
 	
-	private Map<String, ClnCommunicationHandler> mClientConns = new HashMap<>();
+	private Map<String, SvrCommunicationHandler> mClientConns = new HashMap<>();
 	private Object mAccessConnsInfoLock = new Object();
 	
 	public static SessionManager getInstance() {
 		return instance;
 	}
 	
-	public void clientConnected(String sessionId, ClnCommunicationHandler clnCommunicationHandler) {
+	public void clientConnected(String sessionId, SvrCommunicationHandler clnCommunicationHandler) {
 		synchronized (mAccessConnsInfoLock) {
 			mClientConns.put(sessionId, clnCommunicationHandler);
 		}
@@ -33,7 +33,7 @@ public class SessionManager {
 	
 	public void sendRespToClient(String sessionId, byte[] msg) {
 		synchronized (mAccessConnsInfoLock) {
-			ClnCommunicationHandler clnCommunicationHandler = mClientConns.get(sessionId);
+			SvrCommunicationHandler clnCommunicationHandler = mClientConns.get(sessionId);
 			if (clnCommunicationHandler != null) {
 				clnCommunicationHandler.sendRespToClient(msg);
 			}

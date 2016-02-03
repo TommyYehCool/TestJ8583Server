@@ -40,7 +40,7 @@ public class ServerMain {
 	}
 
 	private void initMessageHandler() {
-		boolean initSucceed = MessageHandler.getInstance().init();
+		boolean initSucceed = SvrMessageHandler.getInstance().init();
 		if (initSucceed) {
 			log.info("Initialize MessageHandler done");
 		}
@@ -79,8 +79,8 @@ public class ServerMain {
 				
 				log.info("Client connected, sessionId: <{}>", sessionId);
 				
-				ClnCommunicationHandler clnCommunicationHandler 
-					= new ClnCommunicationHandler(sessionId, clnSocket);
+				SvrCommunicationHandler clnCommunicationHandler 
+					= new SvrCommunicationHandler(sessionId, clnSocket);
 				
 				clnCommunicationHandler.start();
 				
