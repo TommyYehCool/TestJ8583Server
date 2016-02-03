@@ -79,12 +79,14 @@ public class SvrMain {
 				
 				log.info("Client connected, sessionId: <{}>", sessionId);
 				
-				SvrCommunicationHandler clnCommunicationHandler 
+				SvrCommunicationHandler communicationHandler 
 					= new SvrCommunicationHandler(sessionId, clnSocket);
 				
-				clnCommunicationHandler.start();
+				communicationHandler.start();
 				
-				SessionManager.getInstance().clientConnected(sessionId, clnCommunicationHandler);
+				log.info("Initialize SvrCommunicationHandler done");
+				
+				SessionManager.getInstance().clientConnected(sessionId, communicationHandler);
 			}
 		}
 		catch (IOException e) {

@@ -27,6 +27,8 @@ public class SvrCommunicationHandler extends Thread {
 	private SvrMessageHandler mMessageHandler = SvrMessageHandler.getInstance();
 
 	public SvrCommunicationHandler(String sessionId, Socket clnSocket) throws IOException {
+		setName(this.getClass().getSimpleName());
+		
 		mSessoinId = sessionId;
 		mConnected = true;
 		
@@ -65,12 +67,12 @@ public class SvrCommunicationHandler extends Thread {
 			clientDisconnected();
 		}
 		catch (IOException e) {
-			log.error("IOException raised while processing client request, terminate ClnCommunicationHandler thread, msg: <{}>", e.getMessage(), e);
+			log.error("IOException raised while processing client request, terminate SvrCommunicationHandler thread, msg: <{}>", e.getMessage(), e);
 		}
 	}
 	
 	private boolean receiveFromSocket(byte[] msg) throws IOException {
-		boolean isClientDisconnected = false;
+		boolean disconnected = false;
 		
 		int totalMsgLen = msg.length;
 		
@@ -83,9 +85,9 @@ public class SvrCommunicationHandler extends Thread {
 			
 			int readLen = mInputStream.read(tmp);
 
-			isClientDisconnected = (readLen == -1);
+			disconnected = (readLen == -1);
 			
-			if (!isClientDisconnected) {
+			if (!disconnected) {
 				System.arraycopy(tmp, 0, msg, offset, readLen);
 				offset += readLen;
 				toReadLen -= readLen;
@@ -94,7 +96,7 @@ public class SvrCommunicationHandler extends Thread {
 				break;
 			}
 		}
-		return isClientDisconnected;
+		return disconnected;
 	}
 	
 	private void clientDisconnected() {
