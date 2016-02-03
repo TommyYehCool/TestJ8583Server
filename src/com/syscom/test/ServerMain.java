@@ -1,6 +1,7 @@
 package com.syscom.test;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,6 +20,8 @@ public class ServerMain {
 	private void start() {
 		loadLog4jConfig();
 		
+		showPid();
+		
 		initMessageHandler();
 
 		startServer();
@@ -30,6 +33,10 @@ public class ServerMain {
 		PropertyConfigurator.configure(log4jConfig);
 		
 		log.info("Load log4j config succeed, path: <{}>", log4jConfig);
+	}
+	
+	private void showPid() {
+		log.info("Process ID: <{}>", ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
 	}
 
 	private void initMessageHandler() {
