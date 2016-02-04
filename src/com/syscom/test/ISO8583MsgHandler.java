@@ -13,17 +13,17 @@ import com.solab.iso8583.IsoValue;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
 
-public class SvrMessageHandler {
+public class ISO8583MsgHandler {
 	
 	private final static Logger log = LoggerFactory.getLogger("com.syscom.test");
 	
 	private final String mJ8583CfgPath = "./config/j8583-config.xml";
 	
-	private static SvrMessageHandler instance = new SvrMessageHandler();
+	private static ISO8583MsgHandler instance = new ISO8583MsgHandler();
 	
 	private MessageFactory<IsoMessage> mf = new MessageFactory<IsoMessage>();
 	
-	public static SvrMessageHandler getInstance() {
+	public static ISO8583MsgHandler getInstance() {
 		return instance;
 	}
 	
@@ -44,7 +44,8 @@ public class SvrMessageHandler {
 	
 	public void processISO8583(byte[] bClnMsg) {
 		try {
-			IsoMessage isoMsg = mf.parseMessage(bClnMsg, 0);
+			// FIXME 這邊 isoHeaderLength 到時候要看怎麼定義
+			IsoMessage isoMsg = mf.parseMessage(bClnMsg, 12);
 			if (isoMsg != null) {
 				System.out.printf("\nMessage type: %04x%n", isoMsg.getType());
 				System.out.println("FIELD TYPE    VALUE");

@@ -21,10 +21,10 @@ public class SvrCommunicationHandler extends Thread {
 	private InputStream mInputStream;
 	private OutputStream mOutputStream;
 	
-	private RespForClnQ mRespForClnQ;
-	private RespForClnHandler mRespForClnHandler;
+	private MessageQ mMsgQ;
+	private MessageHandler mMessageHandler;
 	
-	private SvrMessageHandler mMessageHandler;
+	private ISO8583MsgHandler mISO8583MsgHandler;
 
 	public SvrCommunicationHandler(String sessionId, Socket clnSocket) throws IOException {
 		setName(this.getClass().getSimpleName());
@@ -35,11 +35,11 @@ public class SvrCommunicationHandler extends Thread {
 		mInputStream = clnSocket.getInputStream();
 		mOutputStream = clnSocket.getOutputStream();
 		
-		mRespForClnQ = new RespForClnQ();
-		mRespForClnHandler = new RespForClnHandler();
-		mRespForClnHandler.start();
+		mMsgQ = new MessageQ();
+		mMessageHandler = new MessageHandler();
+		mMessageHandler.start();
 		
-		mMessageHandler = SvrMessageHandler.getInstance();
+		mISO8583MsgHandler = ISO8583MsgHandler.getInstance();
 	}
 	
 	public void run() {
@@ -64,7 +64,7 @@ public class SvrCommunicationHandler extends Thread {
 				
 				log.info("Received client message done, msg: <{}>", new String(bClnMsg));
 				
-				mMessageHandler.processISO8583(bClnMsg);
+				mISO8583MsgHandler.processISO8583(bClnMsg);
 			}
 			clientDisconnected();
 		}
@@ -104,32 +104,32 @@ public class SvrCommunicationHandler extends Thread {
 	private void clientDisconnected() {
 		log.warn("Detected client disconnected with sessionId: <{}>, "
 				+ "1. Set connected flag to false, "
-				+ "2. Terminate RespForClnHandler thread", mSessoinId);
+				+ "2. Terminate MessageHandler thread", mSessoinId);
 		
 		mConnected = false;
-		sendRespToClient(DISCONNECTED.getBytes());
+		sendMsgToClient(DISCONNECTED.getBytes());
 	}
 	
-	public void sendRespToClient(byte[] msg) {
-		mRespForClnQ.offer(msg);
+	public void sendMsgToClient(byte[] msg) {
+		mMsgQ.offer(msg);
 	}
 	
-	private class RespForClnHandler extends Thread {
+	private class MessageHandler extends Thread {
 		
-		public RespForClnHandler() {
+		public MessageHandler() {
 			setName(this.getClass().getSimpleName());
 		}
 		
 		public void run() {
 			try {
 				while (mConnected) {
-					List<byte[]> respMsg = mRespForClnQ.getResps();
+					List<byte[]> respMsg = mMsgQ.getResps();
 					
 					int msgCounts = respMsg.size();
 					if (msgCounts == 1) {
 						String msg = new String(respMsg.get(0));
 						if (msg.equals(DISCONNECTED)) {
-							log.warn("Detected client disconnected, terminate RespForClnHandler thread...");
+							log.warn("Detected client disconnected, terminate MessageHandler thread...");
 							break;
 						}
 					}
@@ -143,16 +143,16 @@ public class SvrCommunicationHandler extends Thread {
 						mOutputStream.write(bRespMsgs);
 						mOutputStream.flush();
 						
-						log.info("Send response message to client done, msg: <{}>", new String(bRespMsgs));
+						log.info("Send message to client done, msg: <{}>", new String(bRespMsgs));
 					}
 				}
-				log.warn("Received client disconnected signal, terminate RespForClnHandler thread");
+				log.warn("Received client disconnected signal, terminate MessageHandler thread");
 			} 
 			catch (InterruptedException e) {
-				log.error("InterruptedException raised while getting response message from queue, RespForClnHandler thread terminated, msg: <{}>", e.getMessage(), e);
+				log.error("InterruptedException raised while getting response message from queue, MessageHandler thread terminated, msg: <{}>", e.getMessage(), e);
 			} 
 			catch (IOException e) {
-				log.error("IOException raised while sending response message to client, RespForClnHandler thread terminated, msg: <{}>", e.getMessage(), e);
+				log.error("IOException raised while sending response message to client, MessageHandler thread terminated, msg: <{}>", e.getMessage(), e);
 			}
 		}
 	}

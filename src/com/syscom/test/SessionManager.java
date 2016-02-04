@@ -30,7 +30,7 @@ public class SessionManager {
 		synchronized (mAccessConnsInfoLock) {
 			SvrCommunicationHandler clnCommunicationHandler = mClientConns.get(sessionId);
 			if (clnCommunicationHandler != null) {
-				clnCommunicationHandler.sendRespToClient(msg);
+				clnCommunicationHandler.sendMsgToClient(msg);
 			}
 		}
 	}

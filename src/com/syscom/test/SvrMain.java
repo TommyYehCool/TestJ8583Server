@@ -22,7 +22,7 @@ public class SvrMain {
 		
 		showInitLog();
 		
-		initMessageHandler();
+		initISO8583MsgHandler();
 
 		startServer();
 	}
@@ -39,13 +39,13 @@ public class SvrMain {
 		log.info("------- Try to init client process with process ID: <{}> -------", ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
 	}
 
-	private void initMessageHandler() {
-		boolean initSucceed = SvrMessageHandler.getInstance().init();
+	private void initISO8583MsgHandler() {
+		boolean initSucceed = ISO8583MsgHandler.getInstance().init();
 		if (initSucceed) {
-			log.info("Initialize MessageHandler done");
+			log.info("Initialize ISO8583MsgHandler done");
 		}
 		else {
-			log.error("Initialize MessageHandler failed");
+			log.error("Initialize ISO8583MsgHandler failed");
 			System.exit(1);
 		}
 	}
