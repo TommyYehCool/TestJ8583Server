@@ -87,6 +87,8 @@ public class SvrMain {
 				log.info("Initialize SvrCommunicationHandler done");
 				
 				SessionManager.getInstance().clientConnected(sessionId, communicationHandler);
+				
+				log.info("------- Prepare to communicate with client -------");
 			}
 		}
 		catch (IOException e) {
